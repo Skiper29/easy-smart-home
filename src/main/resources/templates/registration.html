@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+            rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.css"
+            rel="stylesheet"
+    />
+    <link href="/static/css/login.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- Pills navs -->
+<div class="container col-md-3 mt-5 ">
+
+    <!-- Pills navs -->
+
+    <!-- Pills content -->
+    <div class="tab-content">
+        <div class="tab-pane  fade show active" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+            <form method="post" th:action="@{/registration}" th:object="${user}">
+                <p class="text-center">Sign up</p>
+                <!-- Name input -->
+                <div class="form-outline mt-4">
+                    <input name="name" type="text" id="registerName" class="form-control" th:field="*{name}"/>
+                    <label class="form-label" for="registerName">Name</label>
+                </div>
+                <!-- end::allButValidation[] -->
+                <span class="alert alert-danger"
+                      th:if="${#fields.hasErrors('name')}"
+                      th:errors="*{name}">Name Error</span>
+                <!-- tag::allButValidation[] -->
+
+                <!-- Username input -->
+                <div class="form-outline mt-4">
+                    <input name="username" type="text" id="registerUsername" class="form-control"
+                           th:field="*{username}"/>
+                    <label class="form-label" for="registerUsername">Username</label>
+                </div>
+                <!-- end::allButValidation[] -->
+                <div th:if="${#fields.hasErrors('username')}" th:each="error: ${#fields.errors('username')}">
+                    <span class="alert alert-danger"
+                          th:text="${error}">Name Error</span>
+                </div>
+
+                <!-- tag::allButValidation[] -->
+
+                <!-- Email input -->
+                <div class="form-outline mt-4">
+                    <input name="email" type="email" id="registerEmail" class="form-control" th:field="*{email}"/>
+                    <label class="form-label" for="registerEmail">Email</label>
+
+                </div>
+                <!-- end::allButValidation[] -->
+                <span class="alert alert-danger"
+                      th:if="${#fields.hasErrors('email')}"
+                      th:errors="*{email}">Name Error</span>
+                <!-- tag::allButValidation[] -->
+
+                <!-- Password input -->
+                <div class="form-outline mt-4">
+                    <input name="password" type="password" id="registerPassword" class="form-control"
+                           th:field="*{password}"/>
+                    <label class="form-label" for="registerPassword">Password</label>
+                </div>
+                <!-- end::allButValidation[] -->
+                <span class="alert alert-danger"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}">Name Error</span>
+                <!-- tag::allButValidation[] -->
+
+                <!-- Repeat Password input -->
+                <div class="form-outline mt-4">
+                    <input name="secondPassword" type="password" id="registerRepeatPassword" class="form-control"/>
+                    <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                </div>
+                <!-- Checkbox -->
+                <div class="form-check d-flex justify-content-center mb-4">
+                    <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+                           aria-describedby="registerCheckHelpText"/>
+                    <label class="form-check-label" for="registerCheck">
+                        I have read and agree to the terms
+                    </label>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-3">Sign in</button>
+                <div class="text-center">
+                    <p>Has already an account? <a href="/login">Sign in</a></p>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Pills content -->
+<script
+        type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js"
+></script>
+</body>
+</html>
