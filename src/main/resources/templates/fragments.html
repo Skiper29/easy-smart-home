@@ -22,10 +22,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Головна</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Про нас</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact-section">Контакти</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Замовити</a></li>
-                    <li sec:authorize="hasRole('ADMIN')" class="nav-item"><a class="nav-link" href="/user/all">Користувачі</a></li>
+                    <li class="nav-item"><a sec:authorize="hasRole('USER')" class="nav-link" href="/order">Замовити</a></li>
+                    <li class="nav-item"><a class="nav-link" sec:authorize="hasRole('USER')"
+                                            th:href="@{/order/{id}/all(id=${#authentication.getPrincipal().getId()})}">Мої замовлення</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" sec:authorize="hasRole('EMPLOYEE')"
+                                            th:href="@{/orders}">Замовлення</a>
+                    </li>
+                    <li sec:authorize="hasRole('ADMIN')" class="nav-item"><a class="nav-link" href="/user/all">Користувачі</a>
+                    </li>
                 </ul>
             </div>
             <div class="me-3 ms-1" sec:authorize="!isAnonymous()">

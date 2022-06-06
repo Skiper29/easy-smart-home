@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Order</title>
@@ -10,59 +11,125 @@
     <link rel="stylesheet" href="/static/css/order.css">
 </head>
 <body>
+<div th:insert="~{fragments :: navbar}"></div>
 <!-- MultiStep Form -->
-<div class="container ">
+<div class="container mb-5">
     <div class="row">
         <div class="">
-            <form id="msform">
+            <form id="msform" method="post" th:object="${order}"
+                  th:action="@{/order/{id}/new(id=${#authentication.getPrincipal().getId()})}">
                 <!-- progressbar -->
                 <ul id="progressbar" class="me-5">
-                    <li class="active">Personal Details</li>
-                    <li>Social Profiles</li>
-                    <li>Social Profiles</li>
-                    <li>Account Setup</li>
+                    <li class="active">Тип будівлі</li>
+                    <li>Функції управління</li>
+                    <li>Функції безпеки</li>
+                    <li>Додаткові дані</li>
                 </ul>
                 <!-- fieldsets -->
-                <fieldset>
-                    <h2 class="fs-title">Personal Details</h2>
-                    <h3 class="fs-subtitle">Tell us something more about you</h3>
-                    <input type="text" name="fname" placeholder="First Name"/>
-                    <input type="text" name="lname" placeholder="Last Name"/>
-                    <input type="text" name="phone" placeholder="Phone"/>
+                <fieldset class="col-md-3">
+                    <div th:if="${#fields.hasErrors()}" class="mb-5">
+                        <h3 style="color: red">Потрібно виправити помилки</h3>
+                    </div>
+                    <h2 class="fs-title">Тип будівлі</h2>
+                    <h3 class="fs-subtitle">Виберіть тип будівлі</h3>
+                    <div>
+                        <label th:each="building: ${T(com.lpnu.easysmarthome.model.enums.Building).values()}"
+                               class="radio-inline m-3">
+                            <img class="img-fluid rounded " th:src="@{${building.getImg()}}" alt="image">
+                            <input type="radio" th:field="*{buildingType}" th:value="${building}"
+                                   class="custom-control-input">
+                            <p class="custom-control-label" th:for="${#ids.prev('buildingType')}"
+                               th:text="${building.getName()}">model</p>
+                        </label>
+                    </div>
                     <input type="button" name="next" class="next action-button" value="Next"/>
                 </fieldset>
-                <fieldset>
-                    <h2 class="fs-title">Social Profiles</h2>
-                    <h3 class="fs-subtitle">Your presence on the social network</h3>
-                    <input type="text" name="twitter" placeholder="Twitter"/>
-                    <input type="text" name="facebook" placeholder="Facebook"/>
-                    <input type="text" name="gplus" placeholder="Google Plus"/>
+                <fieldset class="col-md-3">
+                    <h2 class="fs-title">Функції управління</h2>
+                    <h3 class="fs-subtitle">Виберіть декілька функцій, якими керуватиме розумний дім</h3>
+                    <div>
+                        <label th:each="control: ${T(com.lpnu.easysmarthome.model.enums.ControlFunctions).values()}"
+                               class="m-3">
+                            <img class="img-fluid rounded " th:src="@{${control.getImg()}}" alt="image">
+                            <input type="checkbox" th:field="*{controlFunctions}" th:value="${control}"
+                                   class="custom-control-input">
+                            <p class="custom-control-label" th:for="${#ids.prev('controlFunctions')}"
+                               th:text="${control.getName()}">model</p>
+                        </label>
+                    </div>
+                    <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                    <input type="button" name="next" class="next action-button" value="Next"/>
+                </fieldset>
+                <fieldset class="col-md-3">
+                    <h2 class="fs-title">Функції безпеки</h2>
+                    <h3 class="fs-subtitle">Виберіть декілька функцій безпеки, якими керуватиме розумний дім</h3>
+                    <div>
+                        <label th:each="security: ${T(com.lpnu.easysmarthome.model.enums.SecurityFunctions).values()}"
+                               class="m-3">
+                            <img class="img-fluid rounded " th:src="@{${security.getImg()}}" alt="image">
+                            <input type="checkbox" th:field="*{securityFunctions}" th:value="${security}"
+                                   class="custom-control-input">
+                            <p class="custom-control-label" th:for="${#ids.prev('securityFunctions')}"
+                               th:text="${security.getName()}">model</p>
+                        </label>
+                    </div>
                     <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
                     <input type="button" name="next" class="next action-button" value="Next"/>
                 </fieldset>
                 <fieldset>
-                    <h2 class="fs-title">Social Profiles</h2>
-                    <h3 class="fs-subtitle">Your presence on the social network</h3>
-                    <input type="text" name="twitter" placeholder="Twitter"/>
-                    <input type="text" name="facebook" placeholder="Facebook"/>
-                    <input type="text" name="gplus" placeholder="Google Plus"/>
+                    <h2 class="fs-title">Площа будівлі</h2>
+                    <h3 class="fs-subtitle">Впишіть площі будівлі</h3>
+                    <div class="form-outline mb-4">
+                        <input name="squareMeter" th:field="*{squareMeter}" type="number" id="area"
+                               class="form-control " min="1" max="1000"/>
+                        <label class="form-label" for="area"></label>
+                    </div>
+                    <h2 class="fs-title">додаткові дані</h2>
+                    <h3 class="fs-subtitle">Заповніть додаткові дані для завершення замовлення</h3>
+                    <div class="form-outline mt-4">
+                        <label class="form-label" for="phoneNumber"></label>
+                        <input name="phoneNumber" type="text" id="phoneNumber" class="form-control"
+                               th:field="*{phoneNumber}" placeholder="Номер телефону"/>
+
+                    </div>
+                    <!-- end::allButValidation[] -->
+                    <div th:if="${#fields.hasErrors('phoneNumber')}" th:each="error: ${#fields.errors('phoneNumber')}">
+                    <span class="alert alert-danger"
+                          th:text="${error}">Name Error</span>
+                    </div>
+
+                    <div class="form-outline mt-4">
+                        <label class="form-label" for="objectAddress"></label>
+                        <input name="objectAddress" type="text" id="objectAddress" class="form-control"
+                               th:field="*{objectAddress}" placeholder="Адреса будівлі"/>
+
+                    </div>
+                    <!-- end::allButValidation[] -->
+                    <div th:if="${#fields.hasErrors('objectAddress')}"
+                         th:each="error: ${#fields.errors('objectAddress')}">
+                    <span class="alert alert-danger"
+                          th:text="${error}">Name Error</span>
+                    </div>
+
+                    <div class="form-outline mt-4">
+                        <label class="form-label" for="customerMessage"></label>
+                        <textarea class="form-control rounded-0" id="customerMessage" th:field="*{customerMessage}"
+                                  rows="3" placeholder="Коментар"></textarea>
+
+                    </div>
+                    <div th:if="${#fields.hasErrors('customerMessage')}"
+                         th:each="error: ${#fields.errors('customerMessage')}">
+                    <span class="alert alert-danger"
+                          th:text="${error}">Name Error</span>
+                    </div>
                     <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                    <input type="button" name="next" class="next action-button" value="Next"/>
-                </fieldset>
-                <fieldset>
-                    <h2 class="fs-title">Create your account</h2>
-                    <h3 class="fs-subtitle">Fill in your credentials</h3>
-                    <input type="text" name="email" placeholder="Email"/>
-                    <input type="password" name="pass" placeholder="Password"/>
-                    <input type="password" name="cpass" placeholder="Confirm Password"/>
-                    <input type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                    <input type="submit" name="submit" class="submit action-button" value="Submit"/>
+                    <button type="submit" class="action-button">Submit</button>
                 </fieldset>
             </form>
-
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

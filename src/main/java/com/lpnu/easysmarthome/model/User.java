@@ -1,5 +1,6 @@
 package com.lpnu.easysmarthome.model;
 
+import com.lpnu.easysmarthome.model.enums.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,6 +10,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -36,6 +39,10 @@ public class User implements UserDetails {
     private String country;
     private String address;
     private String img;
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
+    @OneToMany(mappedBy = "employee")
+    private List<Order> jobs;
 
     public Long getId() {
         return id;
@@ -148,5 +155,47 @@ public class User implements UserDetails {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (isActive() != user.isActive()) return false;
+        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
+        if (getUsername() != null ? !getUsername().equals(user.getUsername()) : user.getUsername() != null)
+            return false;
+        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) return false;
+        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        if (getRoles() != null ? !getRoles().equals(user.getRoles()) : user.getRoles() != null) return false;
+        if (getCity() != null ? !getCity().equals(user.getCity()) : user.getCity() != null) return false;
+        if (getCountry() != null ? !getCountry().equals(user.getCountry()) : user.getCountry() != null) return false;
+        if (getAddress() != null ? !getAddress().equals(user.getAddress()) : user.getAddress() != null) return false;
+        if (getImg() != null ? !getImg().equals(user.getImg()) : user.getImg() != null) return false;
+        if (!Objects.equals(orders, user.orders)) return false;
+        return Objects.equals(jobs, user.jobs);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (isActive() ? 1 : 0);
+        result = 31 * result + (getRoles() != null ? getRoles().hashCode() : 0);
+        result = 31 * result + (getCity() != null ? getCity().hashCode() : 0);
+        result = 31 * result + (getCountry() != null ? getCountry().hashCode() : 0);
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
+        result = 31 * result + (getImg() != null ? getImg().hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
+        result = 31 * result + (jobs != null ? jobs.hashCode() : 0);
+        return result;
     }
 }

@@ -1,6 +1,6 @@
 package com.lpnu.easysmarthome.controller;
 
-import com.lpnu.easysmarthome.model.Role;
+import com.lpnu.easysmarthome.model.enums.Role;
 import com.lpnu.easysmarthome.model.User;
 import com.lpnu.easysmarthome.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +53,7 @@ public class RegistrationController {
             }
             return "/registration";
         }
+        user.setImg("http://cdn.onlinewebfonts.com/svg/img_24787.png");
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);

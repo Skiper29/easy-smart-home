@@ -12,15 +12,15 @@
 <body>
 <div th:insert="~{fragments :: navbar}"></div>
 <div class="container">
-    <div class="row row-cols-1 row-cols-md-3 g-6">
-        <div class="card m-3" style="width: 18rem;" th:each="user: ${users}">
+    <div class="row align-items-center text-center">
+        <div class="col-6 mx-auto card m-3" style="width: 18rem;" th:each="user: ${users}">
             <div>
                 <div th:switch="${user.getImg()}">
                     <img class="rounded-circle mt-5"
                          width="150px" th:case="null"
                          src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                          alt="user image">
-                    <img class="rounded-circle mt-5"
+                    <img class="rounded-circle img-fluid mt-5"
                          width="150px" th:case="*"
                          th:src="${user.getImg()}" alt="user image">
                 </div>
@@ -29,7 +29,10 @@
                     <br/>
                     <span class="card-text" th:text="${user.getEmail()}">Text</span>
                     <br/>
-                    <span class="card-text" th:text="${user.getRoles()}">Text</span>
+                    <span class="card-text" th:each="role: ${user.getRoles()}">
+                        <span th:text="${role.name()}"></span>
+                        <span> </span>
+                    </span>
                 </div>
                 <div class="card-footer text-muted">
                     <div class="col text-center">

@@ -36,7 +36,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="text-right">Налаштування профілю</h4>
                 </div>
-                <form th:action="@{/user/{id}(id=${user.getId()})}" th:method="PATCH" th:object="${user}">
+                <form th:method="post" th:action="@{/user/{id}(id=${user.getId()})}" th:object="${user}">
                     <div class="col-md-12">
                         <label for="name" class="labels">Name</label>
                         <input type="text" class="form-control"
@@ -49,7 +49,6 @@
                         <!-- tag::allButValidation[] -->
                     </div>
                     <div class="col-md-12">
-                        <input type="hidden" th:field="*{roles}">
                         <label for="email" class="labels">Email</label>
                         <input type="text"
                                class="form-control"
@@ -89,18 +88,23 @@
                                placeholder="enter image url"
                                th:field="*{img}" id="img">
                     </div>
-                    <div class="col-md-12" th:each="role :${T(com.lpnu.easysmarthome.model.Role).values()}"
+                    <div class="col-md-12" th:each="role :${T(com.lpnu.easysmarthome.model.enums.Role).values()}"
                          sec:authorize="hasRole('ADMIN')">
                         <input type="checkbox" th:field="*{roles}" th:value="${role}">
                         <label th:for="${#ids.prev('roles')}" th:text="${role.name()}"></label>
                     </div>
-                    <div class="mt-5 text-center">
-                        <button class="btn btn-primary profile-button" type="submit">Зберегти профіль</button>
-                    </div>
                     <input type="hidden" th:field="*{password}">
                     <input type="hidden" th:field="*{username}">
                     <input type="hidden" th:field="*{active}">
-
+                    <input sec:authorize="hasRole('USER')" type="hidden" th:field="*{roles}">
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Зберегти профіль</button>
+                    </div>
+                </form>
+                <form th:method="post" th:action="@{/user/{id}/delete(id=${user.getId()})}" >
+                    <div class="mt-5 text-center">
+                        <button class="btn btn-primary profile-button" type="submit">Видалити профіль</button>
+                    </div>
                 </form>
             </div>
         </div>

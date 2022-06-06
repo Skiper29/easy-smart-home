@@ -1,5 +1,3 @@
-
-
 /*basic reset*/
 * {
     margin: 0;
@@ -8,7 +6,7 @@
 
 html {
     height: 100%;
-    background: #212529; /* fallback for old browsers */
+    background: #2e343a; /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #5252fa, #1818ff); /* Chrome 10-25, Safari 5.1-6 */
 }
 
@@ -180,6 +178,7 @@ body {
     margin-top: 30px;
     text-align: center;
 }
+
 .dme_link a {
     background: #FFF;
     font-weight: bold;
@@ -194,4 +193,22 @@ body {
 .dme_link a:hover, .dme_link a:focus {
     background: #C5C5F1;
     text-decoration: none;
+}
+
+label .radio-inline{
+    width: 180px;
+    height: 180px;
+}
+
+#msform img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.alert {
+    margin-bottom: 1px;
+    height: 30px;
+    line-height:30px;
+    padding:0 15px;
 }

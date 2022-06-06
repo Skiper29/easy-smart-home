@@ -1,4 +1,4 @@
-package com.lpnu.easysmarthome.model;
+package com.lpnu.easysmarthome.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 
